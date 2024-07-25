@@ -1,0 +1,101 @@
+{% if block.useFeaturedTestimonials %}
+    {% set testimonials = craft.entries().section('testimonials').isFeatured(true).all() %}
+{% else %}
+
+    {% set selectedTestimonials = block.selectedTestimonials.all() %}
+    {% if selectedTestimonials is not empty %}
+        {% set testimonials = selectedTestimonials %}
+    {% else %}
+        {% set testimonials = craft.entries().section('testimonials').all() %}
+    {% endif %}
+
+{% endif %}
+
+{% if block.sliderType == 'large' %}
+
+{# Large/Wide #}
+<section class="relative flex flex-col justify-center bg-beige-100 min-h-[400px] lg:min-h-[828px] z-10">
+    <div class="container mx-auto">
+        <div x-data="{...testimonialswiper({
+            loop: true,
+            slidesPerView: 1,
+            autoHeight: true,
+            init: false,
+            effect: 'fade',
+            fadeEffect: {
+                crossFade: true
+            },
+            speed: 600,
+            pagination: {
+                el: '.ti-swiper-pagination',
+                clickable: true,
+            },
+            navigation: {
+                nextEl: '.ti-swiper-button-next',
+                prevEl: '.ti-swiper-button-prev',
+            }
+        })}" x-ref="swiper" class="swiper lg:px-40">
+            <div class="swiper-wrapper p-[4.5rem] items-center">
+                {% for testimonial in testimonials %}
+                <div class="swiper-slide fade-slide flex flex-col justify-center text-center cursor-pointer">
+                    {% include "_partials/shapes/testimonials/five-stars.svg" %}
+                    <div class="font-effra font-bold text-2xl lg:text-[2.5rem] leading-[1.2] text-blue-900 my-6 lg:my-8">“{{ testimonial.title }} {{ testimonial.simpleContent|striptags }}”</div>
+                    <div class="heading-xs">{{ testimonial.contentAuthor }}</div>
+                </div>
+                {% endfor %}
+            </div>
+            <div class="hidden lg:block">
+                <div class="swiper-button-prev ti-swiper-button-prev"></div>
+                <div class="swiper-button-next ti-swiper-button-next"></div>
+            </div>
+        </div>
+    </div>
+    {% include "_partials/shapes/testimonials/white-shape.svg" %}
+    <div class="swiper-pagination ti-swiper-pagination"></div>
+</section>
+
+{% else %}
+
+{# Small/Narrow #}
+<section class="relative flex flex-col justify-center py-16 z-10">
+    <div class="container mx-auto">
+        <div x-data="{...testimonialswiper({
+            loop: true,
+            slidesPerView: 1,
+            autoHeight: true,
+            init: false,
+            effect: 'fade',
+            fadeEffect: {
+                crossFade: true
+            },
+            speed: 600,
+            pagination: {
+                el: '.tin-swiper-pagination',
+                clickable: true,
+            },
+            navigation: {
+                nextEl: '.tin-swiper-button-next',
+                prevEl: '.tin-swiper-button-prev',
+            }
+        })}" x-ref="swiper" class="swiper lg:px-24">
+            <div class="swiper-wrapper p-8 items-center">
+                {% for testimonial in testimonials %}
+                <div class="swiper-slide fade-slide flex flex-col justify-center text-center cursor-pointer">
+                    <div class="max-w-[52rem] mx-auto">
+                        {% include "_partials/shapes/testimonials/five-stars.svg" %}
+                        <div class="font-effra font-bold text-2xl lg:text-[2.5rem] leading-[1.2] text-blue-900 my-6 lg:my-8">“{{ testimonial.title }} {{ testimonial.simpleContent|striptags }}”</div>
+                        <div class="heading-xs">{{ testimonial.contentAuthor }}</div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+            <div class="hidden lg:block">
+                <div class="swiper-button-prev tin-swiper-button-prev"></div>
+                <div class="swiper-button-next tin-swiper-button-next"></div>
+            </div>
+        </div>
+    </div>
+    <div class="swiper-pagination tin-swiper-pagination"></div>
+</section>
+
+{% endif %}

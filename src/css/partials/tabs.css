@@ -1,0 +1,57 @@
+.tab {
+
+    @apply bg-transparent hover:bg-transparent text-blue-900/80 hover:text-blue-700 text-sm lg:text-base border-b-2 border-transparent font-medium w-full lg:w-min p-2 cursor-pointer text-center whitespace-nowrap transition-colors duration-200;
+
+    &.tab--active {
+        @apply text-blue-700 border-blue-700;
+    }
+
+}
+
+.tab-group {
+
+    @apply flex flex-row items-center gap-0 overflow-x-scroll hide-scrollbars;
+
+    .tab {
+        @apply px-4;
+    }
+
+    .tab:not(.tab--active) {
+        @apply border-blue-900/[.08];
+    }
+
+}
+
+.category-tab {
+
+    @apply flex w-max text-sm lg:text-base bg-blue-100 text-blue-900 hover:text-blue-700 py-3 px-5 lg:px-6 rounded-3xl items-center justify-center text-center cursor-pointer whitespace-nowrap transition-colors duration-200 ease-out;
+
+    svg.category-icon {
+
+        @apply w-6 h-auto mr-2;
+
+        path {
+            @apply transition-colors duration-200 ease-out;
+        }
+
+    }
+
+    &:hover {
+
+        svg.category-icon path {
+            @apply fill-blue-700;
+        }
+
+    }
+
+    &.tab--active {
+
+        @apply bg-blue-700 text-white;
+
+        svg.category-icon path {
+            @apply fill-white;
+        }
+
+    }
+
+}

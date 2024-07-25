@@ -1,0 +1,192 @@
+{% set subjects = craft.entries.section('ProductCategories').type('subject').all() %}
+{% set productTypes = craft.entries.section('ProductCategories').type('types').all() %}
+
+{# Allow Category Pages to Hide Filters #}
+{% set showFilters = showFilters is defined ? showFilters : true %}
+
+
+{% set query = query ?? '' %}
+{% set page = page ?? 1 %}
+{% set relatedToParam = [] %}
+
+{# Subject Query #}
+{# @see https://github.com/craftcms/cms/issues/5733#issuecomment-800745443 #}
+
+{% set subjectCats = subjectCats ?? '' %}
+{% set subjectQuery = subjectCats|join(',') %}
+
+{% if subjectQuery|length %}
+
+    {% if not relatedToParam|length %}
+        {% set relatedToParam = ['or'] %}
+    {% endif %}
+
+    {% set selectedSubjectIds = subjectQuery|split(',') %}
+
+    {% for id in selectedSubjectIds %}
+        {% set relatedToParam = relatedToParam|merge(
+            [{targetElement: id}]
+        )%}
+    {% endfor %}
+{% endif %}
+
+{# Product Type Query #}
+
+{% set productTypeCats = productTypeCats ?? '' %}
+{% set productTypeQuery = productTypeCats|join(',') %}
+
+{% if productTypeQuery|length %}
+    {% if not relatedToParam|length %}
+        {% set relatedToParam = ['or'] %}
+    {% endif %}
+    {% set selectedProductTypeIds = productTypeQuery|split(',') %}
+    {% for id in selectedProductTypeIds %}
+         {% set relatedToParam = relatedToParam|merge(
+            [{targetElement: id}]
+        )%}
+    {% endfor %}
+{% endif %}
+
+
+{% set totalFiltersCount = relatedToParam|length - 1 %}
+
+{% set productsQuery = craft.shopifyProducts().limit(12).relatedTo(relatedToParam).search(query).orderBy('score') %}
+
+
+    {# Filters #}
+    <div class="relative md:static">
+
+        <div class="flex flex-row flex-wrap lg:flex-nowrap items-center justify-center gap-4 overflow-x-auto md:overflow-x-visible mb-6 lg:mb-10 hide-scrollbars ">
+            {# Subject Filters #}
+            {% if showFilters %}
+                <div class="md:relative"
+                    x-data="{ expanded: false, haschecked: {{subjectCats ? subjectCats|json_encode : '[]'}}, timeout: null }"
+                    x-on:mouseenter="clearTimeout(timeout);"
+                    x-on:mouseleave="timeout = setTimeout(() => { expanded = false }, 300)"
+                    >
+                    <div class="filter-chip" :class="{ 'open': expanded, 'haschecked': haschecked.length }">
+                        <button class="flex items-center" @click="expanded = ! expanded">Subject
+                            <svg class="w-4 h-auto ml-2 pointer-events-none" viewBox="0 0 17 16" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M14.0306 6.53025L9.0306 11.5302C8.96092 11.6002 8.87813 11.6556 8.78696 11.6935C8.6958 11.7314 8.59806 11.7508 8.49935 11.7508C8.40064 11.7508 8.3029 11.7314 8.21173 11.6935C8.12057 11.6556 8.03778 11.6002 7.9681 11.5302L2.9681 6.53025C2.8272 6.38935 2.74805 6.19825 2.74805 5.999C2.74805 5.79974 2.8272 5.60864 2.9681 5.46775C3.10899 5.32685 3.30009 5.2477 3.49935 5.2477C3.69861 5.2477 3.8897 5.32685 4.0306 5.46775L8.49997 9.93712L12.9693 5.46712C13.1102 5.32623 13.3013 5.24707 13.5006 5.24707C13.6999 5.24707 13.891 5.32623 14.0318 5.46712C14.1727 5.60802 14.2519 5.79911 14.2519 5.99837C14.2519 6.19763 14.1727 6.38873 14.0318 6.52962L14.0306 6.53025Z" fill="#253F84"/></svg>
+                        </button>
+                    </div>
+                    <div class="filter-dropdown-menu" x-show="expanded">
+                        {% for cat in subjects %}
+                        <div class="filter-dropdown-menu-item">
+                            <input sprig s-action="childfirst/product-category/subject" s-replace="#results" type="checkbox" name="subjectCats[{{ loop.index }}]" id="subjectCats[{{ loop.index }}]" value="{{cat.id}}" x-model="haschecked" {{ cat.id in subjectCats ? 'checked' :'' }} />
+                            <label for="subjectCats[{{ loop.index }}]">{{cat.title}}</label>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+
+
+                {# Product Type Filters #}
+                <div class="md:relative"
+                    x-data="{ expanded: false, haschecked: {{productTypeCats ? productTypeCats|json_encode : '[]'}}, timeout: null }"
+                    x-on:mouseenter="clearTimeout(timeout);"
+                    x-on:mouseleave="timeout = setTimeout(() => { expanded = false }, 300)"
+                    >
+                    <div class="filter-chip" :class="{ 'open': expanded, 'haschecked': haschecked.length }">
+                        <button class="flex items-center" @click="expanded = ! expanded">Product Type
+                            <svg class="w-4 h-auto ml-2 pointer-events-none" viewBox="0 0 17 16" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M14.0306 6.53025L9.0306 11.5302C8.96092 11.6002 8.87813 11.6556 8.78696 11.6935C8.6958 11.7314 8.59806 11.7508 8.49935 11.7508C8.40064 11.7508 8.3029 11.7314 8.21173 11.6935C8.12057 11.6556 8.03778 11.6002 7.9681 11.5302L2.9681 6.53025C2.8272 6.38935 2.74805 6.19825 2.74805 5.999C2.74805 5.79974 2.8272 5.60864 2.9681 5.46775C3.10899 5.32685 3.30009 5.2477 3.49935 5.2477C3.69861 5.2477 3.8897 5.32685 4.0306 5.46775L8.49997 9.93712L12.9693 5.46712C13.1102 5.32623 13.3013 5.24707 13.5006 5.24707C13.6999 5.24707 13.891 5.32623 14.0318 5.46712C14.1727 5.60802 14.2519 5.79911 14.2519 5.99837C14.2519 6.19763 14.1727 6.38873 14.0318 6.52962L14.0306 6.53025Z" fill="#253F84"/></svg>
+                        </button>
+                    </div>
+                    <div class="filter-dropdown-menu" x-show="expanded">
+                        {% for cat in productTypes %}
+                        <div class="filter-dropdown-menu-item">
+                            <input sprig s-action="childfirst/product-category/type" s-replace="#results" type="checkbox" name="productTypeCats[{{ loop.index }}]" id="productTypeCats[{{ loop.index }}]" value="{{cat.id}}" x-model="haschecked" {{ cat.id in productTypeCats ? 'checked' :'' }} />
+                            <label for="productTypeCats[{{ loop.index }}]">{{cat.title}}</label>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+                <div id="clearFilters"></div>
+            {% endif %}
+            {# Keyword Search #}
+            <input class="ml-auto text-input !my-0 w-64 lg:w-96 max-w-xl" sprig s-trigger="keyup changed delay:300ms" s-replace="#results" type="search" id="query"  name="query" value="{{ query }}" aria-label="Search by keyword" placeholder="Search by keyword">
+
+        </div>
+</div>
+
+
+
+<div id="results">
+
+    {% if showFilters %}
+
+    <div x-data="{ totalFilters: {{totalFiltersCount}} }">
+        <template x-teleport="#clearFilters">
+            <button class="flex items-center gap-1 text-sm ml-4 text-blue-900 hover:text-blue-800" x-show="{{totalFiltersCount}} > 0">
+                <svg class="w-4 h-4 text-neutral-500" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256"><rect width="256" height="256" fill="none"/><polyline points="24 56 24 104 72 104" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="16"/><path d="M67.59,192A88,88,0,1,0,65.77,65.77L24,104" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="16"/></svg>
+                Clear Filters <span class="text-neutral-500">({{totalFiltersCount}})</span>
+            </button>
+        </template>
+    </div>
+    {% endif %}
+
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-4 gap-y-8 lg:gap-x-8 lg:gap-y-16">
+    
+    {% set pageInfo = sprig.paginate(productsQuery, page) %}
+    {% set products = pageInfo.pageResults %}
+
+	{% for product in products %}
+        {% include "products/_partials/product-card.twig" with {product} only  %}
+	{% endfor %}
+
+    </div>
+
+    {% if pageInfo.totalPages > 1 %}
+    
+        {% set previousPage = page - 1 %}
+        {% set nextPage = page + 1 %}
+
+        <div class="pagination justify-start overflow-x-scroll thin-scrollbar lg:hide-scrollbars lg:justify-center mt-8">
+            {% if previousPage != 0 %}
+            <a class="cursor-pointer" sprig s-val:page="{{previousPage}}" s-push-url="?page={{previousPage}}">
+                <svg class="w-6 h-auto mr-4 text-blue-900 pointer-events-none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256"><rect width="256" height="256" fill="none"/><line x1="216" y1="128" x2="40" y2="128" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="16"/><polyline points="112 56 40 128 112 200" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="16"/></svg>
+            </a>
+            {% endif %}
+            {% for i in pageInfo.getDynamicRange(8) %}
+                {% if i == page %}
+                    <a href="#" class="pagination-link pagination-link--active">
+                        {{ i }}
+                    </a>
+                {% else %}
+                    <a class="pagination-link cursor-pointer" sprig s-val:page="{{ i }}" s-push-url="?page={{ i }}">{{ i }}</a>
+                {% endif %}
+            {% endfor %}
+            {% if page != pageInfo.totalPages %}
+            <a class="cursor-pointer" sprig s-val:page="{{ nextPage }}" s-push-url="?page={{ nextPage }}">
+                <svg class="w-6 h-auto ml-4 text-blue-900 pointer-events-none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256"><rect width="256" height="256" fill="none"/><line x1="40" y1="128" x2="216" y2="128" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="16"/><polyline points="144 56 216 128 144 200" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="16"/></svg>
+            </a>
+            {% endif %}
+        </div>
+    {% endif %}
+</div>
+
+{% js %}
+    htmx.on('htmx:afterRequest', function(event) {
+        clearFilters = document.getElementById('clearFilters');
+        let el = event.detail.requestConfig.elt;
+        if (el.classList.contains('pagination-link')) {
+            window.scrollTo({top: 0, behavior: 'smooth'})
+        }
+    });
+
+    let clearFilters;
+    let isLanding = "{{craft.app.request.getSegment(2)}}";
+    document.addEventListener('focus', function (event) {
+        clearFilters = document.querySelector('#clearFilters');
+        if (clearFilters) {
+            clearFilters.addEventListener('click', function (event) {
+                if (isLanding) {
+                    window.location.href = "/products";
+                }
+                document.querySelectorAll('input[type=checkbox]').forEach(el => el.checked = false);
+                htmx.trigger('#results', 'refresh');
+            });
+            event.preventDefault();
+
+        }
+    }, true);
+{% endjs %}

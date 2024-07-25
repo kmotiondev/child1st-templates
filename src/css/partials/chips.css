@@ -1,0 +1,9 @@
+.chip {
+
+    @apply bg-blue-900/[.04] text-blue-900 uppercase text-xs lg:text-sm tracking-[1px] px-[10px] py-1 lg:px-3 lg:py-[6px] w-max rounded-full;
+
+    &.chip--white {
+        @apply bg-white/80;
+    }
+
+}

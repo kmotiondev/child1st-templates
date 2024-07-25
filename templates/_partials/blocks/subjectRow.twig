@@ -1,0 +1,25 @@
+{% import "_macros/icons.twig" as icons %}
+
+{% set heading = block.heading ? block.heading : 'Shop by Subject' %}
+{% set selectedSubjects = block.subjectCategory.all() %}
+
+{% if selectedSubjects is not empty %}
+
+<section class="subject-row">
+    <div class="heading-lg text-center">{{ heading }}</div>
+    <div class="subject-icon-container">
+        {% for subject in selectedSubjects %}
+            <a href="/products?subjectCats[0]={{subject.id}}">
+                <div class="flex flex-col items-center">
+                    <div class="p-2">
+                        {% set icon = subject.categoryIcon.label %}
+                        {{ icons.getIcon('subjects-' ~ icon) }}
+                    </div>
+                    <div class="heading-sm mt-6">{{ subject.title }}</div>
+                </div>
+            </a>
+        {% endfor %}
+    </div>
+</section>
+
+{% endif %}

@@ -1,0 +1,40 @@
+{% set image = block.contentImage.one() %}
+{% set imgCrop = {
+    mode: 'crop',
+    width: 1200,
+    quality: 85,
+    position: 'center'
+} %}
+
+{% set includeVideo = includeVideo is defined ? includeVideo : block.enableVideo %}
+
+<section class="pt-[4.25rem] pb-9 lg:pt-20 lg:pb-16 lg:px-20">
+    <div class="container mx-auto">
+        <div class="flex">
+
+            {% if includeVideo %}
+            <div class="w-full">
+                <div class="flex justify-center relative">
+                    {% if image|length %}
+                    <img class="w-full h-full max-w-5xl max-h-[40rem] object-cover rounded-2xl lg:rounded-4xl" src="{{ image.getUrl(imgCrop) }}" alt="{{ image.alt }}">
+                    {% endif %}
+                    {% if block.featureVideo|length %}
+                    <a class="play-button-container glightbox" href="{{block.featureVideo.url}}" data-gallery="glightbox-{{ block.id }}">
+                        {% include "_partials/shapes/play-button.svg" %}
+                    </a>
+                    {% endif %}
+                </div>
+            </div>
+            {% else %}
+            <div class="w-full">
+                <div class="flex justify-center">
+                    {% if image|length %}
+                    <img class="w-full h-full max-w-5xl max-h-[40rem] object-cover rounded-2xl lg:rounded-4xl" src="{{ image.getUrl(imgCrop) }}" alt="{{ image.alt }}">
+                    {% endif %}
+                </div>
+            </div>
+            {% endif %}
+
+        </div>
+    </div>
+</section>

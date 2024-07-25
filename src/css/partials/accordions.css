@@ -1,0 +1,33 @@
+.accordion {
+
+    @apply px-4 py-3 lg:px-6 lg:py-5 mb-4 border border-blue-900/[.12] bg-transparent rounded-xl lg:rounded-2xl text-blue-900 cursor-pointer transition-opacity duration-200;
+
+    .accordion-title {
+
+        @apply flex items-center justify-between text-base lg:text-xl font-medium;
+
+        svg.accordion-arrow-icon {
+            @apply w-6 h-auto ml-auto flex-shrink-0;
+        }
+
+    }
+
+    .accordion-desc {
+        @apply text-base lg:text-lg mt-4 hidden;
+    }
+
+    &.accordion-open {
+
+        @apply bg-white;
+
+        svg.accordion-arrow-icon {
+            transform:rotate(180deg);
+        }
+
+        .accordion-desc {
+            @apply flex;
+        }
+
+    }
+
+}

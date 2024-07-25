@@ -1,0 +1,18 @@
+{% macro build(blocks = []) %}
+    {% if blocks|length %}
+        {% for block in blocks %}
+            {% include [
+                "_partials/blocks/#{block.type.handle}.twig",
+                "_partials/blocks/missing.twig"
+            ] with {
+                block : block
+            } only %}
+        {% endfor %}
+    {% else %}
+        {% if currentUser %}
+            <div class="container mx-auto">
+                <pre class="heading-xs p-8">Entry contains no blocks or no blocks passed to page builder.</pre>
+            </div>
+        {% endif %}
+    {% endif %}
+{% endmacro %}

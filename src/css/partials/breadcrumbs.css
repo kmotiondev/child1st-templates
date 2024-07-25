@@ -1,0 +1,23 @@
+.breadcrumbs {
+
+    @apply inline-flex items-center text-xs lg:text-sm whitespace-nowrap;
+
+    .breadcrumb {
+
+        @apply inline-flex items-center;
+
+        a {
+            @apply text-blue-900 hover:text-blue-700 inline-flex transition-colors duration-200 ease-out;
+        }
+
+        > div {
+            @apply text-blue-900/60 inline-flex;
+        }
+
+        svg.breadcrumb-arrow-icon {
+            @apply w-[10px] h-auto mx-1 lg:mx-2 inline-flex items-center;
+        }
+
+    }
+
+}

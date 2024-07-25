@@ -1,0 +1,26 @@
+{% set teamMembers = craft.entries().section('teamMembers').all() %}
+{% set imgCrop = {
+    mode: 'crop',
+    quality: 85,
+    position: 'center'
+} %}
+
+{% if teamMembers is not empty %}
+
+<section class="team-members">
+    <div class="container mx-auto">
+        <div class="team-members-container">
+            {% for teamMember in teamMembers %}
+                {% set headshotImg = teamMember.contentImage.one() %}
+                <div class="team-card relative inline-block h-auto {{ cycle(['bg-blue-100', 'bg-orange-100', 'bg-yellow-100', 'bg-purple-100'], loop.index0) }}">
+                    <div class="team-card-profile" style="background-image:url('{{headshotImg.getUrl(imgCrop)}}')"></div>
+                    <div class="team-card-name">{{ teamMember.title }}</div>
+                    <div class="team-card-title">{{ teamMember.jobTitle }}</div>
+                    <div class="team-card-bio">{{ teamMember.simpleContent }}</div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+{% endif %}

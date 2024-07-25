@@ -1,0 +1,36 @@
+{% if block.simpleText is defined and block.simpleText != "" %}
+    {% set contentWidth = 'lg:w-1/2' %}
+{% else %}
+    {% set contentWidth = 'lg:w-2/3' %}
+{% endif %}
+
+{% if block.color and block.color.value == 'beige' %}
+    {% set color = 'bg-beige-100' %}
+{% else %}
+    {% set color = '' %}
+{% endif %}
+
+
+<div class="{{ color }}">
+    <section class="centered-text {{ color }}">
+        <div class="{{ contentWidth }}">
+            {% if block.subheading %}
+            <div class="centered-text-overline">{{block.subheading}}</div>
+            {% endif %}
+            <h2>{{block.heading}}</h2>
+            {% if block.simpleText %}
+                <p class="paragraph-base">{{block.simpleText}}</p>
+            {% endif %}
+            {% set buttons = block.buttonGroup %}
+            {% if buttons|length and buttons[0].text != '' %}
+                {% set count = 0 %}
+                <div class="centered-text-buttons">
+                    {% for button in buttons %}
+                        <a class="button {{ count == 1 or block.buttonStyle == 'outline' ? 'button--secondary' : '' }}" href="{{button.url}}" target="{{button.target}}">{{button.text}}</a>
+                        {% set count = count + 1 %}
+                    {% endfor %}
+                </div>
+            {% endif %}
+        </div>
+    </section>
+</div>

@@ -1,0 +1,33 @@
+{% set req = craft.shopify.api.get('custom_collections',{'limit':1}) %}
+{% set collections = req.custom_collections %}
+<ul>
+{% for collection in collections %}
+        <li>{{collection.title}}</li>
+        {% set productreq = craft.shopify.api.get('products',{'collection_id':collection.id}) %}
+            <pre>{{ dump(productreq.products) }}</pre>
+{% endfor %}
+</ul>
+
+{# {{product.richText}}
+<pre class="bg-white text-black text-left">
+    {{dump(product)}}
+</pre>
+{{product.bodyHtml|raw}} #}
+{# <select name="variantId">
+    {% for variant in product.getVariants() %}
+        <option value="{{ variant.id }}">{{ variant.title }} ({{ variant.price|currency }})</option>
+    {% endfor %}
+</select> #}
+
+    {% set products = craft.shopifyProducts().limit(5).all() %}
+    <div class="grid grid-cols-4">
+      {% for product in products %}
+        {% set defaultVariant = product.getVariants()|first %}
+        <div>
+            {% set img = product.images[0] %}
+            <img src="{{img.src}}" alt="{{product.title}}">
+            <h4 class="text-xl font-semibold">{{product.title}}</h4>
+            <div class="buy-button" data-default-variant-id="{{ defaultVariant.product_id }}" id="product-component-{{ defaultVariant.product_id }}"></div>
+        </div>
+      {% endfor %}
+    </div>

@@ -1,0 +1,65 @@
+{% extends "_layouts/base.twig" %}
+
+{# Featured Article #}
+{% set featuredBlog = entry.featuredBlog.one() ? entry.featuredBlog.one() : null %}
+{% if featuredBlog is null %}
+    {% set featuredBlog = craft.entries().section('blogs').orderBy('postDate DESC').one() %}
+{% endif %}
+
+{# Banner Image #}
+{% set bannerImg = featuredBlog.blogFeaturedImage.one() %}
+
+{% block hero %}
+
+    {% set breadcrumbMenu = {
+        'Blog' : '/blogs'
+    } %}
+
+    {% include "_partials/blocks/pageBannerBlog" with {
+        title: entry.title,
+        featuredBlog: featuredBlog,
+        bannerImg: bannerImg,
+        breadcrumbMenu: breadcrumbMenu
+    } %}
+
+{% endblock %}
+
+{% block content %}
+
+    {% set filters = {showFilters: true} %}
+    {% set topicCats = topicCats is defined ? topicCats : '' %}
+
+    <div class="container mx-auto py-9 lg:py-16" id="blog-search">
+        {{ sprig('blogs/_search', {
+            filters: filters,
+            topicCats: topicCats
+        }) }}
+    </div>
+
+    {# {% set blogCategories = craft.categories.group('blogCategory').all() %}
+    <section class="pt-[72px] lg:pt-24 lg:pb-16 lg:px-20">
+        <div class="container mx-auto max-w-screen-xl">
+            <div class="py-4 lg:px-8">
+                <div class="grid grid-cols-2 lg:grid-cols-3 gap-8">
+                {% for category in blogCategories %}
+                        {% set categoryImage = category.blogFeaturedImage.one() %}
+                        {% set firstEntry = craft.entries.section("blogs").relatedTo(category).one() %}
+                        {% if firstEntry %}
+                            <div>
+                                <a href="{{category.url}}">
+                                {% set firstImage = firstEntry.blogFeaturedImage.one() %}
+                                {% set image = categoryImage ? categoryImage : firstImage %}
+                                {% if image %}
+                                <img class="rounded-xl mb-4" src="{{image.url}}" alt="{{image.title}}">
+                                {% endif %}
+                                <h2 class="heading-md">{{category.title}}</h2>
+                                </a>
+                            </div>
+                        {% endif %}
+                {% endfor %}
+                </div>
+            </div>
+        </div>
+    </section> #}
+
+{% endblock %}

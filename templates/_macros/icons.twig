@@ -1,0 +1,5 @@
+{% macro getIcon(iconId, className, width, height) %}
+    <svg class="icon {{ className }}" role="img" title="{{ iconId }}" width="{{ width|default('24') }}"  height="{{ height|default('24') }}">
+        <use xlink:href="{{ '#icon-' ~ iconId }}"></use>
+    </svg>
+{% endmacro %}

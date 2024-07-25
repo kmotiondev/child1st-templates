@@ -1,0 +1,121 @@
+input[type=text].text-input,
+input[type=search].text-input,
+input[type=email].text-input,
+input[type=number].text-input,
+textarea.text-input,
+select.select-input {
+  @apply border border-blue-900/[.12] rounded-lg text-blue-900 focus:border-blue-500 focus:ring-blue-500 focus:shadow-input focus-within:outline-none placeholder-blue-900/40 block w-full py-3 px-4 lg:py-4 lg:px-5 mt-1 lg:mt-2;
+}
+
+
+label.input-label {
+  @apply text-blue-900 text-sm;
+}
+
+
+select {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  background: transparent;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16px' height='16px' viewBox='0 0 256 256'%3E%3Crect width='24' height='24' fill='none'/%3E%3Cpolyline points='208 96 128 176 48 96' fill='none' stroke='%232747A6' stroke-linecap='round' stroke-linejoin='round' stroke-width='24'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position-x: 98%;
+  background-position-y: 50%;
+}
+
+
+table {
+
+  tr {
+
+    th {
+      &.input-label {
+        @apply font-light text-left font-effra text-xs tracking-[2px] uppercase text-blue-700;
+      }
+    }
+
+    &.table-row {
+
+      td {
+
+        &:first-child {
+          @apply lg:pr-6;
+        }
+
+      }
+
+      &:not(:first-child) {
+
+        td:nth-child(2) {
+          @apply pr-12 lg:pr-0;
+        }
+
+      }
+      
+    }
+
+  }
+
+}
+
+
+/* File Drag & Drop fields */
+div[data-field-type="file-dnd"] {
+
+  @apply flex flex-col;
+
+  .input-label {
+    @apply mb-1;
+  }
+
+  .freeform-file-dnd__input {
+
+    @apply border-blue-900/20;
+
+    .freeform-file-dnd__placeholder {
+
+      @apply text-blue-900;
+
+    }
+
+  }
+
+}
+
+
+/* Tables */
+div[data-field-type="table"] {
+
+  thead {
+    @apply hidden lg:table-header-group;
+  }
+
+  .table-row {
+
+    @apply flex flex-col py-2 lg:py-0 border-b border-b-blue-900/20 lg:border-b-0;
+
+    .table-col {
+
+      &:last-child {
+        button {
+          @apply absolute top-[4.75rem] -right-2 lg:top-4 lg:-right-10;
+        }
+      }
+
+    }
+
+    &:first-child {
+      .table-col:nth-child(3) {
+        @apply hidden;
+      }
+    }
+
+    @media screen and (min-width:1024px) {
+
+      display: table-row;
+
+    }
+
+  }
+
+}

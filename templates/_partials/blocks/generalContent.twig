@@ -1,0 +1,14 @@
+{% if block.color and block.color.value == 'beige' %}
+    {% set color = 'bg-beige-100' %}
+{% else %}
+    {% set color = '' %}
+{% endif %}
+
+
+<section class="general-content {{ color == '' ? 'pb-0' : 'pb-8' }} {{ color }}">
+    <div class="container mx-auto">
+        <div class="richtext max-w-[60rem] mx-auto">
+            {{ block.richText }}
+        </div>
+    </div>
+</section>

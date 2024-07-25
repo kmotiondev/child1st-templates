@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en-US">
+    <head>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <style>html{visibility: hidden;opacity:0;}</style>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"/>
+        <meta name="referrer" content="origin-when-cross-origin"/>
+        <link rel="icon" type="image/x-icon" href="{{ url('images/favicon.png') }}" />
+        <link rel="shortcut icon" type="image/x-icon" href="{{ url('images/webclip.png') }}" />
+        <link rel="apple-touch-icon" href="{{ url('images/webclip.png') }}" />
+        <link rel="stylesheet" href="https://use.typekit.net/bjd0pef.css">
+        <script src="https://cdn.shopify.com/extensions/e6ea3137-358b-4c60-a240-fcbfe7188064/inbox-272/assets/shopifyChatV1Widget.js?button_color=%23005baa&sc=%23FFFFFF&tc=%236A6A6A&i=chat_bubble&t=chat_with_us&p=bottom_right&vp=lowest&shop_id=gSDPjYO3VWwbkgjiboCEp0Fenl2jcmGvw-zqb1BfFs4&shop=child1st-publications.myshopify.com" type="text/javascript" defer="defer"></script>
+        {% set is_production = getenv('CRAFT_ENVIRONMENT') == 'production' %}
+        {% if is_production %}
+
+            <!-- Google tag - GA4 (gtag.js) -->
+            <script async src="https://www.googletagmanager.com/gtag/js?id=G-3PD7RKQ77B"></script>
+            <script>
+                window.dataLayer = window.dataLayer || [];
+                function gtag(){dataLayer.push(arguments);}
+                gtag('js', new Date());
+                gtag('config', 'G-3PD7RKQ77B');
+            </script>
+        
+            <!-- Google Tag Manager -->
+            <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+            new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+            j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+            'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+            })(window,document,'script','dataLayer','GTM-WF3W3VDF');</script>
+            <!-- End Google Tag Manager -->
+
+            <!-- Hotjar Tracking Code for Child1st -->
+            <script>
+                (function(h,o,t,j,a,r){
+                    h.hj=h.hj||function(){(h.hj.q=h.hj.q||[]).push(arguments)};
+                    h._hjSettings={hjid:3502440,hjsv:6};
+                    a=o.getElementsByTagName('head')[0];
+                    r=o.createElement('script');r.async=1;
+                    r.src=t+h._hjSettings.hjid+j+h._hjSettings.hjsv;
+                    a.appendChild(r);
+                })(window,document,'https://static.hotjar.com/c/hotjar-','.js?sv=');
+            </script>
+            <!-- End Hotjar Tracking Code -->
+
+        {% endif %}
+
+    </head>
+    <body class="antialiased font-effra">
+
+        {% if is_production %}
+        <!-- Google Tag Manager (noscript) -->
+        <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-WF3W3VDF" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+        <!-- End Google Tag Manager (noscript) -->
+        {% endif %}
+        
+
+        {% include "_partials/header.twig" %}
+        {% include "_partials/search.twig" %}
+
+        <section id="hero">
+            {% block hero %}
+            {% endblock %}
+        </section>
+
+        <main id="main">
+            {% block content %}
+            {% endblock %}
+        </main>
+
+        {% include "_partials/footer.twig" %}
+
+        {% js "https://sdks.shopifycdn.com/buy-button/latest/buy-button-storefront.js" %}
+        <script>
+            var Shopify = Shopify || {};
+            shop = "child1st-publications.myshopify.com";
+            Shopify.locale = "en";
+            Shopify.currency = {"active":"USD","rate":"1.0"};
+            Shopify.country = "US";
+        </script>
+
+        {{ craft.vite.script("src/js/app.js") }}
+
+        {% block scripts %}{% endblock %}
+        <div id="shopify-cart"></div>
+        
+        <div id="shopify-block-15683396631634586217" class="shopify-block shopify-app-block">
+        <script id="chat-button-container" data-horizontal-position=bottom_right data-vertical-position=lowest data-icon=chat_bubble data-text=chat_with_us data-color=#005baa data-secondary-color=#FFFFFF data-ternary-color=#6A6A6A data-domain=child1st-publications.myshopify.com data-external-identifier=gSDPjYO3VWwbkgjiboCEp0Fenl2jcmGvw-zqb1BfFs4 data-greeting-message=%F0%9F%91%8B+Hello%21+Please+message+us+if+you+have+questions%2C+or+give+an+idea+of+what+you%E2%80%99re+looking+for.+We%E2%80%99re+happy+to+make+recommendations.></script>
+        <style>.grecaptcha-badge {visibility: hidden !important;}</style>
+    </body>
+</html>

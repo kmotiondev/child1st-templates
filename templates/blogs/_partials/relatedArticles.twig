@@ -1,0 +1,52 @@
+<div class="container mx-auto max-w-screen-xl">
+
+    {# Dashed horizontal line #}
+    <div class="pb-10 overflow-x-clip">
+        <svg width="1280" height="1" viewBox="0 0 1280 1" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <line y1="0.5" x2="1280" y2="0.5" stroke="#253F84" stroke-opacity="0.4" stroke-dasharray="16 16"/>
+        </svg>
+    </div>
+
+    <h1 class="heading-2xl text-center">Related Posts</h1>
+
+    {% if relatedArticles|length %}
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12 mt-12">
+            {% for article in relatedArticles %}
+                {% include "blogs/_partials/blogCard" with { blog: article } only %}
+            {% else %}
+                <h1 class="heading-xl text-center">No related posts found.</h1>
+            {% endfor %}
+        </div>
+    
+    {% else %}
+        
+        {% if category %}
+
+            {% set relatedPosts = craft.entries()
+                .section('blogs')
+                .relatedTo(category)
+                .orderBy('postDate DESC')
+                .id('not', entry.id) 
+                .limit(3)
+                .all() 
+            %}
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12 mt-12">
+                {% for post in relatedPosts %}
+                    {% include "blogs/_partials/blogCard" with { blog: post } only %}
+                {% else %}
+                    <h1 class="heading-xl text-center">No related posts found.</h1>
+                {% endfor %}
+            </div>
+
+        {% else %}
+            <p>No category found for the slug '{{ categorySlug }}'.</p>
+        {% endif %}
+
+    {% endif %}
+
+    <div class="flex justify-center mt-0 lg:mt-24">
+        <a href="{{ url('blogs') }}" class="button button--secondary lg:w-max">Back to Blog</a>
+    </div>
+</div>

@@ -1,0 +1,45 @@
+.custom-blog-overline {
+    @apply font-effra font-[600] text-xs lg:text-lg leading-[1.4] lg:leading-[1.3] tracking-[2px] uppercase text-blue-700
+}
+
+.blog-tags {
+
+    @apply flex flex-col w-full h-max border border-blue-500 rounded-3xl p-4 transition-all duration-200 cursor-pointer;
+
+    .blog-tags-top {
+
+        @apply flex items-center justify-between;
+
+        .blog-tags-heading {
+            @apply font-effra font-[600] text-xs lg:text-lg leading-[1.4] lg:leading-[1.3] tracking-[2px] uppercase text-blue-700;
+        }
+
+        svg {
+
+            @apply transition-all duration-200;
+
+        }
+
+    }
+
+    .blog-tags-tags {
+
+        @apply mt-4;
+
+    }
+
+    &.expanded {
+
+        svg {
+            @apply rotate-180;
+        }
+
+    }
+
+}
+
+.blog-excerpt {
+
+    @apply w-full lg:w-1/2 paragraph-lg bg-white rounded-2xl lg:rounded-3xl p-6;
+
+}

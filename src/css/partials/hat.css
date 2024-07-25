@@ -1,0 +1,15 @@
+#hat {
+
+    @apply lg:block hidden py-3 bg-blue-100;
+
+    #hatmenu {
+
+        @apply flex gap-5;
+
+        li a {
+            @apply text-base text-blue-900 hover:text-blue-700 transition-all duration-200;
+        }
+
+    }
+
+}

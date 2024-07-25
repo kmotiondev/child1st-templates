@@ -1,0 +1,10 @@
+{% extends "_layouts/base.twig" %}
+{% import "_macros/pageBuilder.twig" as blocks %}
+{% import "_macros/icons.twig" as icons %}
+
+{% block content %}
+
+  {% set builderBlocks = entry.pageBuilder.all() %}
+  {{ blocks.build(builderBlocks) }}
+
+{% endblock %}

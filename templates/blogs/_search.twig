@@ -1,0 +1,231 @@
+{% set topics = craft.categories().group('blogCategory').all() %}
+
+{% set showFilters = showFilters is defined ? showFilters : true %}
+
+{% set page = page ?? 1 %}
+{% set relatedToParam = [] %}
+
+{% set sortParam = craft.app.request.getParam('sortBy') %}
+{% set sortBy = "oldest" in sortParam ? "postDate ASC" : "postDate DESC" %}
+
+{% set topicCats = topicCats ?? '' %}
+{% set topicQuery = topicCats|join(',') %}
+
+{% if topicQuery|length %}
+
+    {% if not relatedToParam|length %}
+        {% set relatedToParam = ['or'] %}
+    {% endif %}
+
+    {% set selectedTopicIds = topicQuery|split(',') %}
+
+    {% for id in selectedTopicIds %}
+        {% set relatedToParam = relatedToParam|merge(
+            [{targetElement: id}]
+        )%}
+    {% endfor %}
+{% endif %}
+
+{% set totalFiltersCount = relatedToParam|length - 1 %}
+
+{% set blogsQuery = craft.entries().section('blogs').relatedTo(relatedToParam).orderBy(sortBy).limit(12) %}
+
+{% set pageInfo = sprig.paginate(blogsQuery, page) %}
+{% set blogs = pageInfo.pageResults %}
+
+
+{# Filters #}
+<div class="relative md:static">
+    <div class="flex flex-row flex-wrap lg:flex-nowrap items-center justify-center lg:justify-between gap-4 overflow-x-auto md:overflow-x-visible hide-scrollbars ">
+        {# Topic Filters #}
+        {% if showFilters %}
+            <div class="flex flex-wrap flex-row items-center justify-center gap-4">
+                <div class="md:relative"
+                    x-data="{ expanded: false, haschecked: {{topicCats ? topicCats|json_encode : '[]'}}, timeout: null }"
+                    x-on:mouseenter="clearTimeout(timeout);"
+                    x-on:mouseleave="timeout = setTimeout(() => { expanded = false }, 300)"
+                    >
+                    <div class="filter-chip" :class="{ 'open': expanded, 'haschecked': haschecked.length }">
+                        <button class="flex items-center" @click="expanded = ! expanded">Learning Need
+                            <svg class="w-4 h-auto ml-2 pointer-events-none" viewBox="0 0 17 16" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M14.0306 6.53025L9.0306 11.5302C8.96092 11.6002 8.87813 11.6556 8.78696 11.6935C8.6958 11.7314 8.59806 11.7508 8.49935 11.7508C8.40064 11.7508 8.3029 11.7314 8.21173 11.6935C8.12057 11.6556 8.03778 11.6002 7.9681 11.5302L2.9681 6.53025C2.8272 6.38935 2.74805 6.19825 2.74805 5.999C2.74805 5.79974 2.8272 5.60864 2.9681 5.46775C3.10899 5.32685 3.30009 5.2477 3.49935 5.2477C3.69861 5.2477 3.8897 5.32685 4.0306 5.46775L8.49997 9.93712L12.9693 5.46712C13.1102 5.32623 13.3013 5.24707 13.5006 5.24707C13.6999 5.24707 13.891 5.32623 14.0318 5.46712C14.1727 5.60802 14.2519 5.79911 14.2519 5.99837C14.2519 6.19763 14.1727 6.38873 14.0318 6.52962L14.0306 6.53025Z" fill="#253F84"/></svg>
+                        </button>
+                    </div>
+                    <div class="filter-dropdown-menu max-h-[21rem] !overflow-y-scroll" x-show="expanded">
+                        {% for cat in topics %}
+                        {% if cat.blogCategoryType == "learningNeed" %}
+                        <div class="filter-dropdown-menu-item">
+                            <input sprig s-action="childfirst/blog-category/topic" s-replace="#results" type="checkbox" name="topicCats[{{ loop.index }}]" id="topicCats[{{ loop.index }}]" value="{{cat.id}}" x-model="haschecked" {{ cat.id in topicCats ? 'checked' :'' }} />
+                            <label for="topicCats[{{ loop.index }}]">{{cat.title}}</label>
+                        </div>
+                        {% endif %}
+                        {% endfor %}
+                    </div>
+                </div>
+                <div class="md:relative"
+                    x-data="{ expanded: false, haschecked: {{topicCats ? topicCats|json_encode : '[]'}}, timeout: null }"
+                    x-on:mouseenter="clearTimeout(timeout);"
+                    x-on:mouseleave="timeout = setTimeout(() => { expanded = false }, 300)"
+                    >
+                    <div class="filter-chip" :class="{ 'open': expanded, 'haschecked': haschecked.length }">
+                        <button class="flex items-center" @click="expanded = ! expanded">Topic
+                            <svg class="w-4 h-auto ml-2 pointer-events-none" viewBox="0 0 17 16" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M14.0306 6.53025L9.0306 11.5302C8.96092 11.6002 8.87813 11.6556 8.78696 11.6935C8.6958 11.7314 8.59806 11.7508 8.49935 11.7508C8.40064 11.7508 8.3029 11.7314 8.21173 11.6935C8.12057 11.6556 8.03778 11.6002 7.9681 11.5302L2.9681 6.53025C2.8272 6.38935 2.74805 6.19825 2.74805 5.999C2.74805 5.79974 2.8272 5.60864 2.9681 5.46775C3.10899 5.32685 3.30009 5.2477 3.49935 5.2477C3.69861 5.2477 3.8897 5.32685 4.0306 5.46775L8.49997 9.93712L12.9693 5.46712C13.1102 5.32623 13.3013 5.24707 13.5006 5.24707C13.6999 5.24707 13.891 5.32623 14.0318 5.46712C14.1727 5.60802 14.2519 5.79911 14.2519 5.99837C14.2519 6.19763 14.1727 6.38873 14.0318 6.52962L14.0306 6.53025Z" fill="#253F84"/></svg>
+                        </button>
+                    </div>
+                    <div class="filter-dropdown-menu max-h-[21rem] !overflow-y-scroll" x-show="expanded">
+                        {% for cat in topics %}
+                        {% if cat.blogCategoryType == "general" %}
+                        <div class="filter-dropdown-menu-item">
+                            <input sprig s-action="childfirst/blog-category/topic" s-replace="#results" type="checkbox" name="topicCats[{{ loop.index }}]" id="topicCats[{{ loop.index }}]" value="{{cat.id}}" x-model="haschecked" {{ cat.id in topicCats ? 'checked' :'' }} />
+                            <label for="topicCats[{{ loop.index }}]">{{cat.title}}</label>
+                        </div>
+                        {% endif %}
+                        {% endfor %}
+                    </div>
+                </div>
+                <div class="flex items-center gap-2">
+                    <div class="font-effra text-sm lg:text-base text-blue-900">Sort By:</div>
+                    <div class="md:relative"
+                        x-data="{ expanded: false, timeout: null }"
+                        x-on:mouseenter="clearTimeout(timeout);"
+                        x-on:mouseleave="timeout = setTimeout(() => { expanded = false }, 300)"
+                        >
+                        <div class="filter-chip" :class="{ 'open': expanded }">
+                            <button class="flex items-center" @click="expanded = ! expanded">{{ "postDate ASC" in sortBy ? 'Oldest to Newest' : 'Newest to Oldest' }}
+                                <svg class="w-4 h-auto ml-2 pointer-events-none" viewBox="0 0 17 16" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M14.0306 6.53025L9.0306 11.5302C8.96092 11.6002 8.87813 11.6556 8.78696 11.6935C8.6958 11.7314 8.59806 11.7508 8.49935 11.7508C8.40064 11.7508 8.3029 11.7314 8.21173 11.6935C8.12057 11.6556 8.03778 11.6002 7.9681 11.5302L2.9681 6.53025C2.8272 6.38935 2.74805 6.19825 2.74805 5.999C2.74805 5.79974 2.8272 5.60864 2.9681 5.46775C3.10899 5.32685 3.30009 5.2477 3.49935 5.2477C3.69861 5.2477 3.8897 5.32685 4.0306 5.46775L8.49997 9.93712L12.9693 5.46712C13.1102 5.32623 13.3013 5.24707 13.5006 5.24707C13.6999 5.24707 13.891 5.32623 14.0318 5.46712C14.1727 5.60802 14.2519 5.79911 14.2519 5.99837C14.2519 6.19763 14.1727 6.38873 14.0318 6.52962L14.0306 6.53025Z" fill="#253F84"/></svg>
+                            </button>
+                        </div>
+                        <div class="filter-dropdown-menu" x-show="expanded">
+                            <div class="filter-dropdown-menu-item py-2">
+                                <button class="text-blue-900" onclick="blogSortRedirect('default')">Newest to Oldest</button>
+                            </div>
+                            <div class="filter-dropdown-menu-item py-2">
+                                <button class="text-blue-900" onclick="blogSortRedirect('oldest')">Oldest to Newest</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div id="clearFilters"></div>
+            </div>
+        {% endif %}
+        <div class="hidden lg:block text-sm text-blue-900">{{ pageInfo.total }} Articles</div>
+    </div>
+</div>
+
+<div id="results">
+
+    <div x-data="{ totalFilters: {{totalFiltersCount}} }">
+        <template x-teleport="#clearFilters">
+            <button class="flex items-center gap-1 text-sm ml-4 text-blue-900 hover:text-blue-800" x-show="{{totalFiltersCount}} > 0">
+                <svg class="w-4 h-4 text-neutral-500" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256"><rect width="256" height="256" fill="none"/><polyline points="24 56 24 104 72 104" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="16"/><path d="M67.59,192A88,88,0,1,0,65.77,65.77L24,104" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="16"/></svg>
+                Clear Filters <span class="text-neutral-500">({{totalFiltersCount}})</span>
+            </button>
+        </template>
+    </div>
+
+    <div class="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-x-4 gap-y-8 lg:gap-x-8 lg:gap-y-16 py-6 lg:py-10">
+
+        {% for blog in blogs %}
+            {% include "blogs/_partials/blogCard" with { blog } only  %}
+        {% endfor %}
+    </div>
+
+    {% if pageInfo.totalPages > 1 %}
+    
+        {% set previousPage = page - 1 %}
+        {% set nextPage = page + 1 %}
+
+        <div class="pagination justify-start overflow-x-scroll thin-scrollbar lg:hide-scrollbars lg:justify-center mt-8">
+            {% if previousPage != 0 %}
+            <a class="pagination-prev cursor-pointer" sprig s-val:page="{{previousPage}}" s-push-url="?page={{previousPage}}{{ sortParam ? '&sortBy='~sortParam }}">
+                <svg class="w-6 h-auto mr-4 text-blue-900 pointer-events-none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256"><rect width="256" height="256" fill="none"/><line x1="216" y1="128" x2="40" y2="128" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="16"/><polyline points="112 56 40 128 112 200" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="16"/></svg>
+            </a>
+            {% endif %}
+            {% for i in pageInfo.getDynamicRange(8) %}
+                {% if i == page %}
+                    <a href="#" class="pagination-link pagination-link--active">
+                        {{ i }}
+                    </a>
+                {% else %}
+                    <a class="pagination-link cursor-pointer" sprig s-val:page="{{ i }}" s-push-url="?page={{ i }}{{ sortParam ? '&sortBy='~sortParam }}">{{ i }}</a>
+                {% endif %}
+            {% endfor %}
+            {% if page != pageInfo.totalPages %}
+            <a class="pagination-next cursor-pointer" sprig s-val:page="{{ nextPage }}" s-push-url="?page={{ nextPage }}{{ sortParam ? '&sortBy='~sortParam }}">
+                <svg class="w-6 h-auto ml-4 text-blue-900 pointer-events-none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256"><rect width="256" height="256" fill="none"/><line x1="40" y1="128" x2="216" y2="128" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="16"/><polyline points="144 56 216 128 144 200" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="16"/></svg>
+            </a>
+            {% endif %}
+        </div>
+    {% endif %}
+</div>
+
+
+{% js %}
+
+    function blogSortRedirect(value) {
+
+        if (value == 'oldest') {
+            window.location = "/blogs?sortBy=oldest";
+        } else {
+            window.location = "/blogs";
+        }
+
+    }
+
+    const queryData = new URLSearchParams(window.location.search);
+    if (queryData.size > 0) {
+        window.scrollTo({top: 800, behavior: 'smooth'});
+    }
+
+    let clearFilters;
+    let isLanding = "{{craft.app.request.getSegment(2)}}";
+    document.addEventListener('focus', function (event) {
+        clearFilters = document.querySelector('#clearFilters');
+        if (clearFilters) {
+            clearFilters.addEventListener('click', function (event) {
+                if (isLanding) {
+                    window.location.href = "/blogs";
+                }
+                document.querySelectorAll('input[type=checkbox]').forEach(el => el.checked = false);
+                htmx.trigger('#results', 'refresh');
+            });
+            event.preventDefault();
+            
+        }
+    }, true);
+
+    let pagniationLinks = document.querySelectorAll('.pagination-link');
+    pagniationLinks.forEach(link => {
+
+        link.addEventListener('click', function (event) {
+
+            htmx.on('htmx:afterSwap', function(event) {
+                location.reload();
+            });
+
+        }, false);
+
+    });
+
+    let paginationPrev = document.querySelector('.pagination-prev');
+    if (paginationPrev) {
+        paginationPrev.addEventListener('click', function (event) {
+
+            htmx.on('htmx:afterSwap', function(event) {
+                location.reload();
+            });
+
+        });
+    }
+
+    let paginationNext = document.querySelector('.pagination-next');
+    if (paginationNext) {
+            paginationNext.addEventListener('click', function (event) {
+
+            htmx.on('htmx:afterSwap', function(event) {
+                location.reload();
+            });
+
+        });
+    }
+
+{% endjs %}

@@ -1,0 +1,42 @@
+{% set imgCrop = {
+    mode: 'crop',
+    quality: 85,
+    position: 'center'
+} %}
+
+<section class="image-card-row">
+    {% if block.heading %}
+    <h2>{{ block.heading }}</h2>
+    {% endif %}
+
+    {% if block.imageCards %}
+    <div class="image-card-row-container">
+        
+        {% for card in block.imageCards %}
+            
+            {% set image = card.cardImage.one() %}
+
+            <a href="{{ card.cardLink.url ? card.cardLink.url : '#' }}" class="contents">
+                <div class="image-card {{ cycle(['topleft', 'bottomright', 'topright'], loop.index0) }}">
+                    <div class="image-card-container">
+                        <div class="image-card-image" style="background-image:url('{{ image.getUrl(imgCrop) }}')"></div>
+                    </div>
+                    <div class="image-card-meta">
+                        <div class="image-card-meta-title">{{ card.cardTitle }}</div>
+                        <div class="image-card-meta-cta button--tertiary">{{ card.cardLink.text }}</div>
+                    </div>
+                    {% if loop.index0 == 0 %}
+                    {% include "_partials/shapes/cards/orange-lines.svg" %}
+                    {% elseif loop.index0 == 1 %}
+                    {% include "_partials/shapes/cards/purple-circle.svg" %}
+                    {% else %}
+                    {% include "_partials/shapes/cards/yellow-sparkle.svg" %}
+                    {% endif %}
+                </div>
+            </a>
+
+        {% endfor %}
+
+    </div>
+    {% endif %}
+</section>

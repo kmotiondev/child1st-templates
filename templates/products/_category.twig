@@ -1,0 +1,50 @@
+{% extends "_layouts/base" %}
+
+{% set category = entry %}
+
+{% set showSubjectFilter = category.type.handle == 'subject' ? false : true %}
+{% set showLearningFilter = category.type.handle == 'learning' ? false : true %}
+{% set showProductTypeFilter = category.type.handle == 'types' ? false : true %}
+
+{% set catTypes = {
+    'subject' : 'Subject',
+    'learning' : 'Learning Need',
+    'types' : 'Product Type'
+} %}
+
+{% set catParams = {
+    subjectCats: showSubjectFilter,
+    learningCats: showLearningFilter,
+    productTypeCats: showProductTypeFilter,
+} %}
+
+{% set autoFilter = false %}
+{% for param,catParam in catParams %}
+    {% if catParam == false %}
+    {% set autoFilter = param %}
+    {% endif %}
+{% endfor %}
+
+{% set filters = {
+    showFilters: false,
+    category: {
+        title: category.title,
+        type: catTypes[category.type.handle],
+    },
+    (autoFilter) : [category.id] }
+%}
+
+{% block hero %}
+	{% set breadcrumbMenu = {
+        'Products' : '/products',
+	} %} 
+    {% set breadcrumbMenu = breadcrumbMenu | merge({ (category.title) : '/' ~ category.uri}) %}
+	{% include "_partials/blocks/pageBanner" with { title: category.title, subtitle: '', breadcrumbMenu: breadcrumbMenu, variant: 'v1' } %}
+{% endblock %}
+
+
+{% block content %}
+<div class="container mx-auto pt-8 md:pt-12 lg:pt-16">
+	{{ sprig('products/_search',filters) }}
+</div>
+{% endblock %}

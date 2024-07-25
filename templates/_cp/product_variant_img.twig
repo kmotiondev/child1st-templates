@@ -1,0 +1,24 @@
+{% set variants = element.getVariants() %}
+{% if variants|length > 1 %}
+    <h2>Variant Reference</h2>
+    <table style="width:100%">
+    <tr style="border-bottom:1px solid #dfe5ea;">
+        <th>Variant Title</th>
+        <th>Price</th>
+        <th>SKU</th>
+    </tr>
+    {% for variation in variants %}
+    <tr style="border-bottom:1px solid #dfe5ea;">
+        <td><pre>{{variation.title}}</pre></td>
+        <td style="color:#a1aebb">{{variation.price}}</td>
+        <td style="color:#a1aebb">{{variation.sku|default('N/A')}}</td>
+    </tr>
+    {% endfor %}
+    </table>
+{% else %}
+<div class="readable">
+    <blockquote class="note warning">
+        <strong>Warning:</strong> There are no variants currently available for this product. Please revert to standard Product Image display.
+    </blockquote>
+</div>
+{% endif %}

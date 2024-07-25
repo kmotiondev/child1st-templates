@@ -1,0 +1,17 @@
+{% set pageTitle = '404 - Page Not Found' %}
+{% extends "_layouts/base.twig" %}
+
+{% block content %}
+    <section class="container mx-auto flex justify-center text-center pt-[72px] lg:pt-24 pb-0 lg:pb-12 px-4 lg:px-20">
+        <div class="w-full lg:w-1/2">
+            <div class="404-logo flex justify-center">
+                <img class="w-full h-full max-w-[120px] lg:max-w-[160px] max-h-[96px]" src="/images/404-lost.jpg" alt="Page Not Found">
+            </div>
+            <h1 class="font-effra font-bold text-2xl lg:text-[2.5rem] leading-[1.2] text-blue-900 my-4 lg:my-6">Oops! The page you were looking for couldn't be found.</h1>
+            <div class="font-effra font-normal text-base lg:text-xl leading-6 text-blue-900 mb-8 lg:mb-10">Get back on track by returning to the homepage.</div>
+            <div class="flex justify-center">
+                <a href="/" class="button w-full lg:w-max">Return Home</a>
+            </div>
+        </div>
+    </section>
+{% endblock %}

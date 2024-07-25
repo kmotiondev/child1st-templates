@@ -1,0 +1,124 @@
+@import "tailwindcss/base";
+@import "tailwindcss/components";
+@import "tailwindcss/utilities";
+
+/* Fonts */
+@import url("https://use.typekit.net/bjd0pef.css"); /* Effra */
+
+/* Partials */
+@import "./partials/accordions.css";
+@import "./partials/blocks.css";
+@import "./partials/blog.css";
+@import "./partials/breadcrumbs.css";
+@import "./partials/buttons.css";
+@import "./partials/cards.css";
+@import "./partials/carousel.css";
+@import "./partials/chips.css";
+@import "./partials/comments.css";
+@import "./partials/filtering.css";
+@import "./partials/footer.css";
+@import "./partials/forms.css";
+@import "./partials/hat.css";
+@import "./partials/header.css";
+@import "./partials/lists.css";
+@import "./partials/pagination.css";
+@import "./partials/richtext.css";
+@import "./partials/search.css";
+@import "./partials/shop.css";
+@import "./partials/swipers.css";
+@import "./partials/tabs.css";
+@import "./partials/typography.css";
+@import "./partials/video.css";
+
+
+
+@layer base {
+
+    :root {
+        --color-primary: rgb(37, 104, 203);
+        --color-secondary: rgb(249, 145, 67);    
+        --swiper-theme-color: var(--color-primary);
+        --swiper-pagination-bullet-inactive-color: var(--color-primary);
+        --swiper-pagination-bullet-opacity: 1;      
+        --swiper-pagination-bullet-inactive-opacity: 0.2;
+        --swiper-navigation-size: 20px;
+    }
+
+    html, body {
+
+        overflow-x: hidden;
+
+
+        ::-webkit-scrollbar {
+            height: 8px;
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #2747A6;
+            -webkit-border-radius: 1ex;
+        }
+
+        ::-webkit-scrollbar-corner {
+            background: #2747A6;
+        }
+
+    }
+
+    .hide-scrollbars::-webkit-scrollbar {
+        display: none;
+    }
+    .hide-scrollbars {
+        -ms-overflow-style: none;
+        scrollbar-width: none;
+    }
+
+    .thin-scrollbar::-webkit-scrollbar {
+        display: block;
+        height: 1px;
+        width: 1px;
+        background: #95C7FB;
+    }
+
+    .thin-scrollbar::-webkit-scrollbar-thumb {
+        background: #2747A6;
+    }
+
+}
+
+@keyframes fadeInDown {
+    0% {
+       opacity: 0;
+       transform: translateY(-8px);
+    }
+    100% {
+       opacity: 1;
+       transform: translateY(0);
+    }
+}
+
+@keyframes fadeInUp {
+    0% {
+       opacity: 0;
+       transform: translateY(8px);
+    }
+    100% {
+       opacity: 1;
+       transform: translateY(0);
+    }
+}
+
+.fade-in-down {
+    animation-duration: 0.25s;
+    animation-fill-mode: both;
+    animation-name: fadeInDown;
+}
+
+.fade-in-up {
+    animation-duration: 0.25s;
+    animation-fill-mode: both;
+    animation-name: fadeInUp;
+}
+
+/* FOUT Fix - Must remain at end of file */
+html {visibility: visible;opacity:1;}

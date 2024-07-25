@@ -1,0 +1,98 @@
+{% set heading = block.heading ? block.heading : 'Frequently Asked Questions' %}
+
+{% set faqs = [] %}
+{% set selectedCategories = block.faqCategory.all() %}
+
+{% if selectedCategories is empty %}
+    {% if block.limitToSix %}
+        {% set faqs = craft.entries().section('faqs').limit(6).all() %}
+    {% else %}
+        {% set faqs = craft.entries().section('faqs').all() %}
+    {% endif %}
+{% else %}
+
+    {% for category in selectedCategories %}
+        {% if block.limitToSix %}
+            {% set faqsInCategory = craft.entries().section('faqs').relatedTo(category).limit(6).all() %}
+            {% set faqs = faqs|merge(faqsInCategory) %}
+        {% else %}
+            {% set faqsInCategory = craft.entries().section('faqs').relatedTo(category).all() %}
+            {% set faqs = faqs|merge(faqsInCategory) %}
+        {% endif %}
+    {% endfor %}
+    
+{% endif %}
+
+{% if faqs|length %}
+
+{% if block.color and block.color.value == 'beige' %}
+    {% set color = 'bg-beige-100' %}
+{% else %}
+    {% set color = '' %}
+{% endif %}
+
+<section class="{{ color }}">
+    <div class="{{ color }} py-8 md:py-12 xl:py-16 mt-8 md:mt-12 lg:mt-16">
+        <div class="container max-w-screen-xl mx-auto">
+
+            {% if block.viewAllButton %}
+
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <div>
+                    <div class="mb-6 lg:mb-10">
+                        <h2 class="heading-xl">{{ heading }}</h2>
+                    </div>
+                    <div class="w-full lg:max-w-max">
+                        <a class="button" href="/faq">View All FAQs</a>
+                    </div>
+                </div>
+                <div class="lg:col-span-2">
+                    <div x-data="{selectedAcc:1}">
+                        {% for faq in faqs %}
+                        <div @click="selectedAcc = {{loop.index}}" :class="selectedAcc == {{loop.index}} ? 'accordion accordion-open' : 'accordion'">
+                            <div class="accordion-title">
+                                {{ faq.title }}
+                                <svg class="accordion-arrow-icon" viewBox="0 0 25 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M20.531 9.53104L13.031 17.031C12.9614 17.1008 12.8787 17.1561 12.7876 17.1938C12.6966 17.2316 12.599 17.251 12.5004 17.251C12.4019 17.251 12.3043 17.2316 12.2132 17.1938C12.1222 17.1561 12.0394 17.1008 11.9698 17.031L4.46979 9.53104C4.32906 9.39031 4.25 9.19944 4.25 9.00042C4.25 8.80139 4.32906 8.61052 4.46979 8.46979C4.61052 8.32906 4.80139 8.25 5.00042 8.25C5.19944 8.25 5.39031 8.32906 5.53104 8.46979L12.5004 15.4401L19.4698 8.46979C19.5395 8.40011 19.6222 8.34483 19.7132 8.30712C19.8043 8.26941 19.9019 8.25 20.0004 8.25C20.099 8.25 20.1965 8.26941 20.2876 8.30712C20.3786 8.34483 20.4614 8.40011 20.531 8.46979C20.6007 8.53947 20.656 8.6222 20.6937 8.71324C20.7314 8.80429 20.7508 8.90187 20.7508 9.00042C20.7508 9.09896 20.7314 9.19654 20.6937 9.28759C20.656 9.37863 20.6007 9.46136 20.531 9.53104Z" fill="#253F84"/>
+                                </svg>
+                            </div>
+                            <div class="accordion-desc fade-in-down">
+                                <div class="richtext">
+                                    {{ faq.simpleContent }}
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+            
+            {% else %}
+
+            <div class="mb-8">
+                <h2 class="text-center heading-lg">{{ heading }}</h2>
+            </div>
+            <div x-data="{selectedAcc:1}">
+                {% for faq in faqs %}
+                <div @click="selectedAcc = {{loop.index}}" :class="selectedAcc == {{loop.index}} ? 'accordion accordion-open' : 'accordion'">
+                    <div class="accordion-title">
+                        {{ faq.title }}
+                        <svg class="accordion-arrow-icon" viewBox="0 0 25 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M20.531 9.53104L13.031 17.031C12.9614 17.1008 12.8787 17.1561 12.7876 17.1938C12.6966 17.2316 12.599 17.251 12.5004 17.251C12.4019 17.251 12.3043 17.2316 12.2132 17.1938C12.1222 17.1561 12.0394 17.1008 11.9698 17.031L4.46979 9.53104C4.32906 9.39031 4.25 9.19944 4.25 9.00042C4.25 8.80139 4.32906 8.61052 4.46979 8.46979C4.61052 8.32906 4.80139 8.25 5.00042 8.25C5.19944 8.25 5.39031 8.32906 5.53104 8.46979L12.5004 15.4401L19.4698 8.46979C19.5395 8.40011 19.6222 8.34483 19.7132 8.30712C19.8043 8.26941 19.9019 8.25 20.0004 8.25C20.099 8.25 20.1965 8.26941 20.2876 8.30712C20.3786 8.34483 20.4614 8.40011 20.531 8.46979C20.6007 8.53947 20.656 8.6222 20.6937 8.71324C20.7314 8.80429 20.7508 8.90187 20.7508 9.00042C20.7508 9.09896 20.7314 9.19654 20.6937 9.28759C20.656 9.37863 20.6007 9.46136 20.531 9.53104Z" fill="#253F84"/>
+                        </svg>
+                    </div>
+                    <div class="accordion-desc fade-in-down">
+                        <div class="richtext">
+                            {{ faq.simpleContent }}
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+                
+            {% endif %}
+
+        </div>
+    </div>
+</section>
+{% endif %}

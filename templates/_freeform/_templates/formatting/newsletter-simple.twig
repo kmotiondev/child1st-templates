@@ -1,0 +1,78 @@
+{# <input type="email" class="text-input" name="input-subscribe-footer" id="input-subscribe-footer" aria-label="Subscribe to Newsletter" placeholder="Enter your email">
+<button title="Subscribe to Newsletter">
+    <svg class="w-6 h-auto" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M20.7806 12.531L14.0306 19.281C13.8899 19.4218 13.699 19.5008 13.5 19.5008C13.301 19.5008 13.1101 19.4218 12.9694 19.281C12.8286 19.1403 12.7496 18.9494 12.7496 18.7504C12.7496 18.5514 12.8286 18.3605 12.9694 18.2198L18.4397 12.7504H3.75C3.55109 12.7504 3.36032 12.6714 3.21967 12.5307C3.07902 12.3901 3 12.1993 3 12.0004C3 11.8015 3.07902 11.6107 3.21967 11.4701C3.36032 11.3294 3.55109 11.2504 3.75 11.2504H18.4397L12.9694 5.78104C12.8286 5.64031 12.7496 5.44944 12.7496 5.25042C12.7496 5.05139 12.8286 4.86052 12.9694 4.71979C13.1101 4.57906 13.301 4.5 13.5 4.5C13.699 4.5 13.8899 4.57906 14.0306 4.71979L20.7806 11.4698C20.8504 11.5394 20.9057 11.6222 20.9434 11.7132C20.9812 11.8043 21.0006 11.9019 21.0006 12.0004C21.0006 12.099 20.9812 12.1966 20.9434 12.2876C20.9057 12.3787 20.8504 12.4614 20.7806 12.531Z" fill="#2568CB"/>
+    </svg>
+</button> #}
+
+{% css formCss %}
+
+{{ form.renderTag({
+    disable: ["submitButtons"]
+}) }}
+
+{# Set styling for Ajax responses #}
+<script>
+  var form = document.querySelector('[data-id="{{ form.anchor }}"]');
+  if (form) {
+    form.addEventListener("freeform-ready", function (event) {
+      var freeform = event.target.freeform;
+      freeform.setOption("errorClassBanner", ["ff-form-errors", "bg-red-100", "border", "border-red-400", "text-red-700", "px-4", "py-3", "rounded", "relative", "mb-4"]);
+      freeform.setOption("errorClassList", ["errors", "text-red-500", "text-xs", "pt-1"]);
+      freeform.setOption("errorClassField", ["border-red-500"]);
+      freeform.setOption("successClassBanner", ["bg-green-100", "border", "border-green-500", "text-green-700", "px-4", "py-3", "rounded", "relative", "mb-4"]);
+    })
+  }
+</script>
+
+{# Define standard field classes #}
+{% set standardFieldClasses = "text-input " ~ form.properties.color %}
+{% set selectFieldClasses = "select-input" %}
+{% set checkboxFieldClasses = " text-gray-700 border border-blue-900/80 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-blue-900" %}
+{% set fileFieldClasses = "appearance-none block w-full text-gray-700 py-3 px-4 leading-tight" %}
+{% set tableFieldClasses = "appearance-none w-full text-blue-900/80 py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-blue-900/80" %}
+{% set signatureFieldClasses = "hover:bg-gray-400 text-black font-normal py-1 px-2 rounded mr-1" %}
+{% set standardLabelsClasses = "input-label" %}
+
+{# Render form rows #}
+{% for row in form %}
+    <div class="{{ form.properties.rowClass }}">
+        {% for field in row %}
+
+            {# Calculate column class based on columns count #}
+            {% set columnCount = row|length %}
+            {% set columnClass = "" %}
+            
+            {# Set field class based on field type #}
+            {% set fieldClass = standardFieldClasses %}
+            {% set fieldClass = fieldClass ~ (field.hasErrors ? " border-red-500") %}
+
+            {# Set label class #}
+            {% set labelClass = standardLabelsClasses ~ " block" %}
+            {% set labelClass = labelClass ~ (field.required ? " required" : "") %}
+
+            {# Set error class #}
+            {% set errorClass = "text-red-500 text-xs pt-2" %}
+
+            {# Set instructions class #}
+            {% set instructionClass = "text-blue-900/80 text-xs" %}
+
+
+            {# Create a column except when creating Freeform Payments columns #}
+            <div class="main-column-class {{ columnClass }} ff-fieldtype-{{ field.type }}"{{ field.rulesHtmlData }}>
+                
+
+                    {{ field.render({
+                        class: fieldClass,
+                        instructionsBelowField: true,
+                        errorClass: errorClass,
+                    }) }}
+                    <button data-freeform-action="submit" name="form_page_submit" type="submit" aria-label="Submit" data-original-text="Submit" data-processing-text="Processing...">
+                        <svg class="w-6 h-auto" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M20.7806 12.531L14.0306 19.281C13.8899 19.4218 13.699 19.5008 13.5 19.5008C13.301 19.5008 13.1101 19.4218 12.9694 19.281C12.8286 19.1403 12.7496 18.9494 12.7496 18.7504C12.7496 18.5514 12.8286 18.3605 12.9694 18.2198L18.4397 12.7504H3.75C3.55109 12.7504 3.36032 12.6714 3.21967 12.5307C3.07902 12.3901 3 12.1993 3 12.0004C3 11.8015 3.07902 11.6107 3.21967 11.4701C3.36032 11.3294 3.55109 11.2504 3.75 11.2504H18.4397L12.9694 5.78104C12.8286 5.64031 12.7496 5.44944 12.7496 5.25042C12.7496 5.05139 12.8286 4.86052 12.9694 4.71979C13.1101 4.57906 13.301 4.5 13.5 4.5C13.699 4.5 13.8899 4.57906 14.0306 4.71979L20.7806 11.4698C20.8504 11.5394 20.9057 11.6222 20.9434 11.7132C20.9812 11.8043 21.0006 11.9019 21.0006 12.0004C21.0006 12.099 20.9812 12.1966 20.9434 12.2876C20.9057 12.3787 20.8504 12.4614 20.7806 12.531Z" fill="#2568CB"/></svg>
+                    </button>
+
+            </div>
+        {% endfor %}
+    </div>
+{% endfor %}
+{{ form.renderClosingTag }}

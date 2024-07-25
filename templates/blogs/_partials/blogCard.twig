@@ -1,0 +1,29 @@
+{% set blogImg = blog.blogFeaturedImage.one() %}
+{% set imgCrop = {
+    mode: 'crop',
+    width: 1200,
+    quality: 85,
+    position: 'center',
+    format: 'webp'
+} %}
+
+<a href="{{ blog.url }}" class="contents">
+    <div class="blog-card">
+        <div class="blog-card-container">
+            {% if blogImg|length %}
+            <div class="blog-card-image" style="background-image:url('{{ blogImg.getUrl(imgCrop) }}')"></div>
+            {% else %}
+            <div class="blog-card-image bg-blue-300/75"></div>
+            {% endif %}
+        </div>
+        <div class="blog-card-meta">
+            <div class="blog-card-meta-date">{{ blog.postDate|date('long') }}</div>
+            <div class="blog-card-meta-title">{{ blog.title }}</div>
+            {% if blog.excerpt %}
+            <div class="blog-card-meta-desc">{{ blog.excerpt|truncate(210)|striptags }}</div>
+            {% else %}
+            <div class="blog-card-meta-desc">{{ blog.blogContent ? blog.blogContent|truncate(210)|striptags : "" }}</div>
+            {% endif %}
+        </div>
+    </div>
+</a>

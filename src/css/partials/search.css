@@ -1,0 +1,23 @@
+#searchbar {
+
+    @apply hidden w-full px-4 py-2 lg:px-20 lg:py-3 bg-blue-900 text-white;
+
+    .searchbar-inner {
+
+        @apply flex items-center justify-between;
+
+        input[type=text].text-input-search {
+            @apply bg-blue-900 outline-none border-transparent focus:border-transparent focus:ring-0 w-full placeholder-white;
+        }
+
+        svg {
+            @apply w-8 h-auto mr-2;
+        }
+
+    }
+
+    &.open {
+        @apply block;
+    }
+
+}

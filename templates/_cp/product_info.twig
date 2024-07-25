@@ -1,0 +1,17 @@
+<h3>Shopify - Description</h3>
+<div style="width:100%;height:800px;border:1px solid #ccc;padding:10px;overflow:auto">
+{{element.bodyHtml|raw}}
+</div>
+{% set shopifyProductImages = element.images %}
+{% if shopifyProductImages %}
+<h3>Shopify - Images</h3>
+<div style="width:100%;height:800px;border:1px solid #ccc;padding:10px;overflow:auto">
+    {% for img in shopifyProductImages %}
+    <div style="margin-bottom:20px;padding-bottom:10px;border-bottom:1px solid #ccc;">
+        <img style="width:300px;height:auto;border:1px solid #ccc;padding:5px;margin:0" src="{{img.src}}" alt="{{img.alt}}">
+        <pre>{{img.alt}}</pre>
+        <pre><a href="{{img.src}}" target="_blank">{{img.src}}</a></pre>
+    </div>
+    {% endfor %}
+</div>
+{% endif %}

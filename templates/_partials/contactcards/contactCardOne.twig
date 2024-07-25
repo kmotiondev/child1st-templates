@@ -1,0 +1,19 @@
+{% import "_macros/icons.twig" as icons %}
+
+<div class="contact-card w-full h-max">
+    <div class="contact-card-title">
+        {% set icon = card.contactIcon.label %}
+        {{ icons.getIcon('contact-' ~ icon) }}
+        {{ card.heading }}
+    </div>
+    {% if card.contactInfo|length %}
+    <div class="contact-card-meta grid-cols-1 {{ card.contactInfo|length > 1 ? 'lg:grid-cols-2' : '' }}">
+        {% for info in card.contactInfo %}
+            <div>
+                <div class="contact-card-meta-subtitle">{{ info.subheading }}</div>
+                <div class="contact-card-meta-info">{{ info.text|nl2br }}</div>
+            </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+</div>

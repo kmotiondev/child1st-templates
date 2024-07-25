@@ -1,0 +1,13 @@
+.play-button-container {
+
+    @apply absolute top-[37%] cursor-pointer transition-all duration-200;
+
+    svg.play-button {
+        @apply w-[144px] lg:w-[228px] h-auto;
+    }
+
+    &:hover {
+        @apply scale-110;
+    }
+
+}

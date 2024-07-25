@@ -1,0 +1,25 @@
+.carousel-arrow {
+
+    @apply p-2 bg-white rounded-full shadow-lg hover:shadow-xl cursor-pointer transition-all duration-200;
+
+    svg {
+        @apply w-3 lg:w-6 h-auto;
+    }
+
+}
+
+.carousel-dots-row {
+
+    @apply flex gap-[6px] lg:gap-2 flex-row items-center;
+
+    &.carousel-dots-row--dot {
+
+        @apply w-[6px] h-[6px] lg:w-2 lg:h-2 rounded-full bg-blue-700 opacity-20;
+
+        &.selected {
+            @apply opacity-100;
+        }
+
+    }
+
+}

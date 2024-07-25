@@ -1,0 +1,67 @@
+{% extends "_layouts/base.twig" %}
+
+{% block hero %}
+
+    {% set bannerHeading = category.title %}
+    {% set bannerSubHeading = false %}
+    {% set bannerVariant = 'v1' %}
+    {% include "_partials/blocks/pageBanner" with {
+        title: bannerHeading,
+        subtitle: bannerSubHeading,
+        variant: bannerVariant
+    } %}
+
+{% endblock %}
+
+{% block content %}
+
+<div class="container mx-auto max-w-screen-2xl">
+      {# Breadcrumb #}
+      <ol class="breadcrumbs">
+        <li class="breadcrumb">
+          <a href="#">
+              Home
+          </a>
+        </li>
+        <li class="breadcrumb">
+          <a href="/blogs">
+            <svg class="breadcrumb-arrow-icon" viewBox="0 0 11 10" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <g opacity="0.5">
+                    <path d="M7.80941 5.33187L4.68441 8.45687C4.59635 8.54493 4.47691 8.5944 4.35238 8.5944C4.22784 8.5944 4.1084 8.54493 4.02034 8.45687C3.93228 8.36881 3.88281 8.24937 3.88281 8.12484C3.88281 8.0003 3.93228 7.88086 4.02034 7.7928L6.8137 5.00023L4.02113 2.20687C3.97752 2.16326 3.94293 2.1115 3.91934 2.05453C3.89574 1.99756 3.88359 1.9365 3.88359 1.87484C3.88359 1.81317 3.89574 1.75211 3.91934 1.69514C3.94293 1.63817 3.97752 1.58641 4.02113 1.54281C4.06473 1.4992 4.11649 1.46461 4.17346 1.44102C4.23043 1.41742 4.29149 1.40527 4.35316 1.40527C4.41482 1.40527 4.47588 1.41742 4.53285 1.44102C4.58982 1.46461 4.64159 1.4992 4.68519 1.54281L7.81019 4.6678C7.85384 4.7114 7.88845 4.76319 7.91204 4.8202C7.93563 4.8772 7.94774 4.9383 7.94767 5C7.94759 5.06169 7.93534 5.12277 7.91162 5.17971C7.88789 5.23666 7.85316 5.28837 7.80941 5.33187Z" fill="#253F84"/>
+                </g>
+            </svg>
+            Blog
+          </a>
+        </li>
+        <li class="breadcrumb">
+          <div>
+            <svg class="breadcrumb-arrow-icon" viewBox="0 0 11 10" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <g opacity="0.5">
+                    <path d="M7.80941 5.33187L4.68441 8.45687C4.59635 8.54493 4.47691 8.5944 4.35238 8.5944C4.22784 8.5944 4.1084 8.54493 4.02034 8.45687C3.93228 8.36881 3.88281 8.24937 3.88281 8.12484C3.88281 8.0003 3.93228 7.88086 4.02034 7.7928L6.8137 5.00023L4.02113 2.20687C3.97752 2.16326 3.94293 2.1115 3.91934 2.05453C3.89574 1.99756 3.88359 1.9365 3.88359 1.87484C3.88359 1.81317 3.89574 1.75211 3.91934 1.69514C3.94293 1.63817 3.97752 1.58641 4.02113 1.54281C4.06473 1.4992 4.11649 1.46461 4.17346 1.44102C4.23043 1.41742 4.29149 1.40527 4.35316 1.40527C4.41482 1.40527 4.47588 1.41742 4.53285 1.44102C4.58982 1.46461 4.64159 1.4992 4.68519 1.54281L7.81019 4.6678C7.85384 4.7114 7.88845 4.76319 7.91204 4.8202C7.93563 4.8772 7.94774 4.9383 7.94767 5C7.94759 5.06169 7.93534 5.12277 7.91162 5.17971C7.88789 5.23666 7.85316 5.28837 7.80941 5.33187Z" fill="#253F84"/>
+                </g>
+            </svg>
+            {{category.title}}
+          </div>
+        </li>
+    </ol>
+
+    {% set entries = craft.entries.section("blogs").relatedTo(category) %} 
+    <section class="pt-[72px] lg:pt-24 lg:pb-16">
+                <div class="grid grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-12">
+                {% for entry in entries %}
+                    <div>
+                        <a href="{{entry.url}}">
+                        {% set image = entry.blogFeaturedImage.one() %}
+                        {% if image %}
+                            <img class="rounded-xl mb-4 lg:mb-8" src="{{image.url}}" alt="{{image.title}}">
+                        {% endif %}
+                        <h2 class="heading-md">{{entry.title}}</h2>
+                        <p class="text-sm">{{entry.excerpt}}</p>
+                        </a>
+                    </div>
+                {% endfor %}
+            </div>
+    </section>
+</div>
+
+{% endblock %}

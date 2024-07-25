@@ -1,0 +1,25 @@
+{% set pageTitle = "Products" %}
+{% extends "_layouts/base" %}
+
+{% block hero %}
+	{% set breadcrumbMenu = {
+		'Products' : '/products'
+	} %}
+	{% include "_partials/blocks/pageBanner" with { title: 'Shop Products', subtitle: '', breadcrumbMenu: breadcrumbMenu, variant: 'v1' } %}
+{% endblock %}
+
+{% block content %}
+
+
+{% set filters = {showFilters: true} %}
+{% set subjectCats = subjectCats is defined ? subjectCats : '' %}
+{% set productTypeCats = productTypeCats is defined ? productTypeCats : '' %}
+
+<div class="container mx-auto pt-8 md:pt-12 lg:pt-16">
+	{{ sprig('products/_search',{
+		filters: filters,
+		subjectCats: subjectCats,
+		productTypeCats: productTypeCats
+		}) }}
+</div>
+{% endblock %}

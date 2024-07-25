@@ -1,0 +1,36 @@
+{% extends "_layouts/base.twig" %}
+{% import "_macros/contactCards.twig" as cards %}
+{% set contactForm = entry.formSelect %}
+
+{% block hero %}
+    {% if entry.pageBannerToggle %}
+    {% set bannerHeading = entry.heading ? entry.heading : entry.title %}
+    {% set bannerSubHeading = entry.subheadingRte ? entry.subheadingRte : false %}
+    {% set bannerVariant = entry.pageBannerVariant ? entry.pageBannerVariant : 'v1' %}
+    {% include "_partials/blocks/pageBanner" with {
+        title: bannerHeading,
+        subtitle: bannerSubHeading,
+        variant: bannerVariant
+    } %}
+    {% endif %}
+{% endblock %}
+
+{% block content %}
+
+    <section class="pt-[72px] lg:pt-24 lg:pb-16 lg:px-20">
+        <div class="container mx-auto">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16">
+                <div class="flex flex-col gap-y-4 lg:gap-y-6 order-2 lg:order-1">
+
+                    {% set contactCards = entry.contactCards.all() %}
+                    {{ cards.build(contactCards) }}
+
+                </div>
+                <div class="order-1 lg:order-2">
+                    {{ craft.freeform.form(contactForm.handle).render }}
+                </div>
+            </div>
+        </div>
+    </section>
+
+{% endblock %}

@@ -1,0 +1,97 @@
+/* Comments / Reviews CSS overrides */
+.cc-i {
+
+    .cc-i-header {
+
+        @apply paragraph-base gap-4 gap-x-4 gap-y-2 lg:gap-y-4;
+
+        .cc-ll-i {
+
+            @apply flex items-center gap-4;
+
+            &:before {
+                @apply text-lg
+            }
+
+        }
+
+    }
+
+    .cc-i-body {
+
+        .cc-i-comment {
+            @apply text-blue-900 paragraph-sm;
+        }
+
+    }
+
+    .cc-i-replies {
+        @apply ml-6 px-4 border-l-4 border-orange-400;
+    }
+
+    a.cc-i-reply {
+        @apply transition-colors duration-200;
+    }
+
+    div[data-role="reply"] {
+
+        .cc-f {
+            .cc-f-wrap {
+                .cc-f-cf {
+                    .cc-radios {
+                        @apply hidden;
+                    }
+                }
+            }
+        }
+
+    }
+
+}
+
+
+/* Form fields */
+.cc-f {
+
+    .cc-f-row {
+        @apply m-0;
+    }
+
+    .cc-f-input {
+        @apply border border-blue-900/[.12] rounded-lg text-blue-900 focus:border-blue-500 focus:ring-blue-500 focus:shadow-input focus-within:outline-none placeholder-blue-900/40 block w-full py-3 px-4 lg:py-4 lg:px-5 mt-1 lg:mt-2;
+    }
+
+    .cc-f-textarea {
+        @apply border border-blue-900/[.12] rounded-lg text-blue-900 focus:border-blue-500 focus:ring-blue-500 focus:shadow-input focus-within:outline-none placeholder-blue-900/40 block w-full py-3 px-4 lg:py-4 lg:px-5 mt-1 lg:mt-2;
+    }
+
+    .cc-radios {
+
+        @apply flex gap-4;
+
+        .cc-radio {
+
+            @apply flex items-center gap-1 cursor-pointer;
+
+            input[type="radio"] {
+                @apply cursor-pointer;
+            }
+
+            label {
+                @apply cursor-pointer text-blue-900;
+            }
+
+        }
+
+    }
+
+}
+
+
+.cc-w {
+
+    .cc-f-btn {
+        @apply bg-blue-700 hover:bg-blue-800 text-white font-effra font-semibold rounded-full w-full lg:w-max py-3 px-6 lg:py-4 lg:px-10 border-0 flex items-center justify-center gap-2 no-underline text-center whitespace-nowrap transition-colors duration-200 ease-out;
+    }
+
+}

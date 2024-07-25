@@ -1,0 +1,52 @@
+{% set heroImage = block.contentImage.one() %}
+{% set imgCrop = {
+    mode: 'crop',
+    width: 1200,
+    quality: 85,
+    position: 'center'
+} %}
+
+<section class="home-banner relative">
+
+    <div class="lg:absolute top-0 z-10 w-full">
+
+        <div class="flex lg:container mx-auto">
+            <div class="w-full lg:w-1/2">
+                    <div class="home-banner-left">
+                        <div class="my-12">
+                            {% if block.subheading %}
+                            <h3>{{ block.subheading }}</h3>
+                            {% endif %}
+                            <h1>{{ block.heading }}</h1>
+                            {% if block.simpleText %}
+                            <p>{{ block.simpleText }}</p>
+                            {% endif %}
+                            {% set buttons = block.buttonGroup %}
+                            {% if buttons|length and buttons[0].text != '' %}
+                                {% set count = 0 %}
+                                <div class="home-banner-buttons">
+                                    {% for button in buttons %}
+                                        <a class="button {{ count == 1 ? 'button--secondary' : '' }}" href="{{button.url}}" target="{{button.target}}">{{button.text}}</a>
+                                        {% set count = count + 1 %}
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="bg-beige-100">
+    </div>
+    <div class="home-banner-right">
+        {% include "_partials/shapes/home/beige.svg" %}
+        <div class="bg-blend-multiply bg-cover bg-center bg-no-repeat h-[38rem] lg:h-full" style="background-image:url('{{ heroImage.getUrl(imgCrop) }}')"></div>
+        {% include "_partials/shapes/home/orange-arrow.svg" %}
+        {% include "_partials/shapes/home/blue-lines.svg" %}
+        {% include "_partials/shapes/home/pink-sparkle.svg" %}
+        {% include "_partials/shapes/home/yellow-star.svg" %}
+        {% include "_partials/shapes/home/purple-circle.svg" %}
+    </div>
+</section>

@@ -1,0 +1,68 @@
+.swiper-button-prev,.swiper-button-next {
+    @apply carousel-arrow scale-[.68] lg:scale-100 w-10 h-10 flex items-center justify-center;
+}
+
+.swiper-button-prev {
+
+    left: var(--swiper-navigation-sides-offset, 24px);
+
+    @media screen and (max-width:1024px) {
+        left: var(--swiper-navigation-sides-offset, 0.5rem);
+    }
+
+}
+
+.swiper-button-next {
+
+    right: var(--swiper-navigation-sides-offset, 24px);
+
+    @media screen and (max-width:1024px) {
+        right: var(--swiper-navigation-sides-offset, 0.5rem);
+    }
+
+}
+
+.pg-swiper-button-prev {
+    left: var(--swiper-navigation-sides-offset, -16px);
+}
+
+.pg-swiper-button-next {
+    right: var(--swiper-navigation-sides-offset, -16px);
+}
+
+.swiper-pagination.swiper-pagination-horizontal {
+
+    bottom: var(--swiper-pagination-bottom, 24px);
+
+    &.tin-swiper-pagination {
+
+        bottom: var(--swiper-pagination-bottom, 45px);
+
+    }
+
+    @media screen and (max-width:1024px) {
+        bottom: var(--swiper-navigation-sides-offset, 0.75rem);
+    }
+
+}
+
+.swiper-pagination-bullet {
+    @apply w-[6px] h-[6px] lg:w-2 lg:h-2;
+}
+
+.swiper-button-prev:after,
+.swiper-button-next:after {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='36' height='36' fill='%232747A6' viewBox='0 0 256 256'%3E%3Cpath d='M181.66,133.66l-80,80a8,8,0,0,1-11.32-11.32L164.69,128,90.34,53.66a8,8,0,0,1,11.32-11.32l80,80A8,8,0,0,1,181.66,133.66Z'%3E%3C/path%3E%3C/svg%3E");
+    width: 24px;
+    height: 24px;
+    background-size: contain;
+    content:'';
+    font-family: unset;
+}
+.swiper-button-prev:after {
+    transform: rotateY(180deg);
+}
+
+.swiper-slide.fade-slide:not(.swiper-slide-active){
+    opacity: 0 !important;
+  }

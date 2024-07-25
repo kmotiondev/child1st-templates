@@ -1,0 +1,91 @@
+{% extends "_layouts/base.twig" %}
+{% import "_macros/icons.twig" as icons %}
+
+
+{% block content %}
+
+{# Page Image & Banner #}
+<section class="bg-beige-100 pb-4">
+        
+    {% set image = entry.blogFeaturedImage.one() %}
+    {% if image %}
+        <img class="w-full" src="{{ image.url }}" alt="{{ image.title }}">
+    {% endif %}
+
+    {% set hasExcerpt = entry.excerpt != "" ? true : false %}
+
+    <div class="container mx-auto">
+        <div class="flex flex-col lg:flex-row items-center gap-12 pt-12 lg:pt-[72px] pb-6{{ hasExcerpt ? '' : ' text-center' }}">
+
+            <div class="w-full{{ hasExcerpt ? ' lg:w-1/2' : '' }}">
+
+                <small class="block custom-blog-overline uppercase -my-4">{{ entry.postDate|date('M d, Y') }}</small>
+                <h1 class="heading-2xl -mt-4 w-full">{{ entry.title }}</h1>
+
+                <div class="social-media-links mt-0 lg:mt-8 flex gap-6{{ hasExcerpt ? '' : ' justify-center' }}">
+                    <a href="https://www.facebook.com/sharer.php?u={{ entry.url|url_encode }}" target="_blank">
+                        {{ icons.getIcon('socials-facebook-blue') }}
+                    </a>
+
+                    <a href="https://pinterest.com/pin/create/button/?url={{ entry.url|url_encode }}&amp;media={{ image ? image.url|url_encode }}&amp;description={{ entry.title|url_encode }}" target="_blank">
+                        {{ icons.getIcon('socials-pinterest-blue') }}
+                    </a>
+
+                    <a href="https://twitter.com/share?text={{ entry.title|url_encode }}&amp;url={{ entry.url|url_encode }}" target="_blank">
+                        {{ icons.getIcon('socials-twitter-blue') }}
+                    </a>
+
+                    <a href="https://www.instagram.com/" target="_blank">
+                        {{ icons.getIcon('socials-instagram-blue') }}
+                    </a>
+                </div>
+            
+            </div>
+
+            {# {% set tags = entry.tags.all() %}
+
+            {% if tags %}
+                {% include "blogs/_partials/tags" with { tags: tags } only %}
+            {% endif %} #}
+
+            {% if entry.excerpt %}
+            <div class="blog-excerpt">
+                {{ entry.excerpt|striptags|nl2br }}
+            </div>
+            {% endif %}
+
+        </div>
+    </div>
+
+</section>
+
+{# SVG & Shape #}
+<section class="w-full relative">
+    {% include "_partials/shapes/banner/blog-banner.svg" %}
+    
+    <div class="absolute -top-4 lg:top-6 left-2/3 z-10" style="width: 50px; height: 50px;">
+        {% include "_partials/shapes/banner/yellow-star.svg" %}
+    </div>
+</section>
+
+
+{# Content #}
+<div class="container mx-auto max-w-screen-md">
+    <div class="richtext py-12 lg:py-24" id="blogContent">
+        {{ entry.blogContent }}
+    </div>
+</div>
+
+
+{# Get category based on url slug /blogs/dyslexia (etc.) #}
+{% set categorySlug = craft.app.request.getSegment(2) %}
+{% set category = craft.categories.slug(categorySlug).one() %}
+{% set relatedArticles = entry.relatedArticles.all() %}
+
+{% include "blogs/_partials/relatedArticles" with {
+    categorySlug: categorySlug,
+    category: category,
+    relatedArticles: relatedArticles
+} %}
+
+{% endblock %}

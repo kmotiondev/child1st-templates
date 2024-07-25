@@ -1,0 +1,16 @@
+<div class="blog-tags" x-data="{ expanded: 1 }" :class="{ 'expanded' : expanded }">
+    <div class="blog-tags-top" id="blog-tags-top" @click="expanded !== 1 ? expanded = 1 : expanded = null" aria-controls="panel-1" aria-label="Expand Tags" :aria-expanded="expanded">
+        <div class="blog-tags-heading">Tags</div>
+        <svg width="16" height="17" viewBox="0 0 16 17" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M13.354 6.5386L8.35403 11.5386C8.30759 11.5851 8.25245 11.622 8.19175 11.6471C8.13105 11.6723 8.06599 11.6852 8.00028 11.6852C7.93457 11.6852 7.86951 11.6723 7.80881 11.6471C7.74811 11.622 7.69296 11.5851 7.64653 11.5386L2.64653 6.5386C2.55271 6.44478 2.5 6.31753 2.5 6.18485C2.5 6.05217 2.55271 5.92492 2.64653 5.8311C2.74035 5.73728 2.8676 5.68457 3.00028 5.68457C3.13296 5.68457 3.26021 5.73728 3.35403 5.8311L8.00028 10.478L12.6465 5.8311C12.693 5.78464 12.7481 5.74779 12.8088 5.72265C12.8695 5.69751 12.9346 5.68457 13.0003 5.68457C13.066 5.68457 13.131 5.69751 13.1917 5.72265C13.2524 5.74779 13.3076 5.78464 13.354 5.8311C13.4005 5.87755 13.4373 5.9327 13.4625 5.9934C13.4876 6.0541 13.5006 6.11915 13.5006 6.18485C13.5006 6.25055 13.4876 6.3156 13.4625 6.3763C13.4373 6.43699 13.4005 6.49214 13.354 6.5386Z" fill="#253F84"/>
+        </svg>
+    </div>
+    <div class="blog-tags-tags" id="blog-tags-tags" x-cloak x-collapse x-show="expanded == 1" id="panel-1" :aria-hidden="expanded">
+        {% for tag in tags %}
+            <div class="inline paragraph-base">
+                {{ tag.title|ucfirst }}
+                {% if not loop.last %}/ {% endif %}
+            </div>
+        {% endfor %}
+    </div>
+</div>

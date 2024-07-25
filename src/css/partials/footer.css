@@ -1,0 +1,180 @@
+#footer-hat {
+
+    @apply relative top-[80px] lg:top-[100px] z-10;
+
+    .footer-hat-block {
+
+        @apply flex flex-col lg:flex-row justify-between items-center bg-beige-100 text-blue-900 px-6 py-6 lg:px-14 lg:py-12 rounded-3xl;
+
+        .footer-hat-block-title {
+            @apply font-effra font-bold text-xl lg:text-[2rem] leading-[1.3] lg:leading-[1.2] text-blue-900 w-full lg:w-[520px] mb-5 lg:mb-0;
+        }
+
+        .footer-hat-block-cta {
+            @apply w-full lg:w-auto;
+        }
+
+        .footer-hat-block-input {
+
+            @apply relative w-full lg:w-[22rem];
+
+            input[type=email].text-input {
+                @apply m-0 w-full;
+            }
+
+            button {
+                @apply absolute right-0 top-0 p-4;
+            }
+
+        }
+
+    }
+
+    svg.orange {
+        @apply absolute -top-9 right-[18px] lg:-top-[78px] lg:right-11 w-[38px] lg:w-[78px] h-auto;
+    }
+
+}
+
+#footer {
+
+    .footer-vector {
+        @apply relative -left-[1px] top-[2px] w-[101%] h-auto;
+    }
+
+    .main-footer {
+
+        @apply bg-blue-900 text-white text-sm px-4 pt-24 lg:px-20 pb-12 lg:pt-[104px] lg:pb-[72px];
+
+        .main-footer-container {
+
+            @apply container mx-auto lg:flex justify-between pt-10 lg:pt-0;
+
+            .footer-left {
+
+                @apply lg:w-1/5;
+
+                > a {
+                    svg.dark-logo {
+                        @apply w-40 h-auto;
+                    }
+                }
+
+                .contact-info {
+
+                    @apply flex flex-col gap-4 my-6 lg:my-8;
+
+                    .contact-info-item {
+
+                        @apply flex items-center gap-3;
+
+                        svg {
+                            @apply w-[25px] h-auto;
+                        }
+
+                    }
+
+                }
+
+                .social-media-links {
+
+                    @apply flex items-center gap-4;
+                    
+                    > a {
+
+                        svg.social-logo {
+
+                            @apply w-7 h-auto;
+
+                            path {
+                                @apply transition-colors duration-200;
+                            }
+
+                        }
+
+                        &:hover {
+                            svg.social-logo path {
+                                @apply fill-blue-300;
+                            }
+                        }
+
+                    }
+
+                }
+
+            }
+
+            .footer-right {
+
+                @apply md:flex lg:w-2/3 md:gap-8 lg:gap-16 justify-around;
+
+                .footer-links-wrapper {
+
+                    @apply md:w-1/2 mt-10 lg:mt-0;
+
+                    .footer-links-heading {
+                        @apply uppercase font-semibold text-xs tracking-heading mb-4 lg:mb-6 text-blue-300;
+                    }
+
+                    ul.footer-links {
+
+                        @apply flex flex-col gap-1 text-base;
+
+                        li {
+
+                            @apply py-1;
+
+                            a {
+                                @apply block transition-colors duration-200;
+                            }
+
+                            &:hover {
+                                a {
+                                    @apply text-blue-300;
+                                }
+                            }
+
+                        }
+
+                    }
+
+                }
+
+            }
+
+            @media screen and (max-width:1024px) {
+                @apply px-0;
+            }
+
+        }
+
+    }
+
+    .sub-footer {
+
+        @apply px-4 pb-6 lg:px-20 lg:pb-8 bg-blue-900 text-white;
+        margin-top: -1px;
+
+        .sub-footer-container {
+
+            @apply container mx-auto flex flex-col lg:flex-row gap-4 lg:gap-0 justify-between text-xs;
+
+            .links {
+
+                @apply flex gap-3;
+
+                a {
+                    @apply text-blue-300 hover:text-white underline transition-colors duration-200;
+                }
+
+            }
+
+            @media screen and (max-width:1024px) {
+                @apply px-0;
+            }
+
+        }
+
+    }
+
+}
